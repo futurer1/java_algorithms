@@ -1,3 +1,6 @@
+/*
+Определить является ли строка палиндромом
+*/
 public class IsPalindromeString {
   
     public static void main(String[] args) {
