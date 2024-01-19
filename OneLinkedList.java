@@ -14,6 +14,24 @@ public class OneLinkedList {
         }
     }
 
+    /**
+     * Вставка элемента в начало списка
+     */
+    public void insertFirst(int val){
+        Node newnode = new Node(val, null);
+
+        if (container.getNext() != null) {
+            newnode.setNext(container.getNext());
+        }
+        container.setNext(newnode);
+
+        Integer tmp = container.getValue();
+        container.setValue(
+            container.getNext().getValue()
+        );
+        container.getNext().setValue(tmp);
+    }
+
     public void reverse() {
 
         MyList reverseList = new MyList();
