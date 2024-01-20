@@ -15,7 +15,7 @@ public class OneLinkedList {
     }
 
     /**
-     * Вставка элемента в начало списка
+     * Вставка элемента в начало списка 
      */
     public void insertFirst(int val){
         Node newnode = new Node(val, null);
