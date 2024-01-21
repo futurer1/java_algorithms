@@ -15,6 +15,56 @@ public class OneLinkedList {
     }
 
     /**
+     * Список перестраивается в обратном порядке
+     */
+    public void reverse() {
+
+        MyList reverseList = new MyList();
+        int count = getLastIndex();
+        // идём от последнего элемента к первому и сохраняем в новый список
+        for (int i = count; i >= 0; i--) {
+            Integer last = getValueByIndex(i);
+            reverseList.add(last);
+        }
+
+        Node curNode = container;
+
+        int k = 0;
+        // новый список копируется взамен старого
+        while (curNode.next != null) {
+            curNode.setValue(reverseList.getValueByIndex(k));
+            curNode = curNode.next;
+            k++;
+        }
+    }
+
+    /**
+     * второй способ перестроения списка в обратном порядке
+     */
+    public void reverse1() {
+        Node curNode = container;
+        int k = 0;
+        while (curNode.next != null) {
+            insertFirst(curNode.value);
+            curNode = curNode.next;
+            k++;
+        }
+        insertFirst(curNode.value);
+
+        curNode = container;
+        int l = 0;
+        while (curNode.next != null) {
+            if (l + 1 == k) {
+                curNode.next = null;
+                break;
+            }
+
+            curNode = curNode.next;
+            l++;
+        }
+    }
+
+    /**
      * Вставка элемента в начало списка 
      */
     public void insertFirst(int val){
@@ -30,25 +80,6 @@ public class OneLinkedList {
             container.getNext().getValue()
         );
         container.getNext().setValue(tmp);
-    }
-
-    public void reverse() {
-
-        MyList reverseList = new MyList();
-        int count = getLastIndex();
-        for (int i = count; i >= 0; i--) {
-            Integer last = getValueByIndex(i);
-            reverseList.add(last);
-        }
-
-        Node curNode = container;
-
-        int k = 0;
-        while (curNode.next != null) {
-            curNode.setValue(reverseList.getValueByIndex(k));
-            curNode = curNode.next;
-            k++;
-        }
     }
 
     public int getLastIndex() {
