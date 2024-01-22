@@ -1,6 +1,6 @@
 ## Binary Tree
 
-!()[inorder_1.jpg]
+![](inorder_1.jpg)
 
 ```java
 BinaryTree binaryTree = new BinaryTree();
@@ -17,4 +17,4 @@ System.out.println(res);
 
 ### Filled Object:
 
-!()[BinaryTree.png]
+![](BinaryTree.png)
