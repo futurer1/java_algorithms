@@ -1,6 +1,7 @@
 
 package java_algorithms.binary_tree;
 
+// Обход бинарного дерева и сбор всех данных вершин в массив
 public class BinaryTree {
 
     /**
@@ -25,7 +26,7 @@ public class BinaryTree {
 }
 
 /**
- * Узел дерева, из них составляется дерево
+ * Узел, из узлов составляется дерево
  */
 class TreeNode {
   
