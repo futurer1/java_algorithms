@@ -1,3 +1,5 @@
+package java_algorithms;
+
 import java.util.Arrays;
 
 public class ReverseArray {
