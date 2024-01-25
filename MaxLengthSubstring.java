@@ -55,4 +55,29 @@ public class SubstringMaxLength {
                 .map(Object::toString)
                 .collect(Collectors.joining());
     }
+
+    /**
+     * Используется 2 указателя (скользящее окно)
+     * Накопителем символов является Set
+     * Правый указатель right сдвигаем вправо, символ запоминаем, пока не встретим повтор символа
+     * Левый указатель сдвигаем тоже вправо, удаляя каждый символ из Set
+     * двигаем left вправо, пока не уберем повторяющийся символ
+     */
+    private static int lengthOfLongestSubstring(String s) {
+        Set<Character> set = new HashSet<>();
+        int left = 0;
+        int right = 0;
+        int maxLength = 0;
+        while (right < s.length()) {
+            if (!set.contains(s.charAt(right))) {
+                set.add(s.charAt(right));
+                maxLength = Math.max(maxLength, set.size());
+                right++;
+            } else {
+                set.remove(s.charAt(left));
+                left++;
+            }
+        }
+        return maxLength;
+    }
 }
