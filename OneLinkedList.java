@@ -119,28 +119,28 @@ public class OneLinkedList {
         return resStr.toString();
     }
 
-    class Node {
-        private Integer value;
-        private Node next;
+    public static class Node<T> {
+        private T value;
+        private Node<T> next;
 
-        public Node(Integer value, Node next) {
+        public Node(T value, Node<T> next) {
             this.value = value;
             this.next = next;
         }
 
-        public Integer getValue() {
+        public T getValue() {
             return value;
         }
 
-        public void setValue(Integer value) {
+        public void setValue(T value) {
             this.value = value;
         }
 
-        public Node getNext() {
+        public Node<T> getNext() {
             return next;
         }
 
-        public void setNext(Node next) {
+        public void setNext(Node<T> next) {
             this.next = next;
         }
     }
