@@ -1,4 +1,4 @@
-public class OneLinkedList {
+public class OneLinkedList implements Iterable<T> {
     private Node container;
 
     public void add(Integer val) {
@@ -117,6 +117,35 @@ public class OneLinkedList {
         resStr.append(curNode.getValue());
 
         return resStr.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<>() {
+
+            private Node<T> nextNode;
+            private int curIndex = -1;
+            @Override
+            public boolean hasNext() {
+                return curIndex + 1 < countElems;
+            }
+
+            @Override
+            public T next() {
+                curIndex++;
+
+                if (curIndex >= 0 && curIndex < countElems) {
+                    if (nextNode == null) {
+                        nextNode = firstNode;
+                    } else {
+                        nextNode = nextNode.getNext();
+                    }
+                    return nextNode.getValue();
+                } else {
+                    throw new NoSuchElementException();
+                }
+            }
+        };
     }
 
     public static class Node<T> {
