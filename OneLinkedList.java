@@ -15,14 +15,15 @@ public class OneLinkedList<T> implements Iterable<T> {
     public void add(T val) {
         if (firstNode == null) {
             firstNode = new Node<T>(val, null);
-        } else {
-            Node<T> curNode = firstNode;
-            while (curNode.next != null) {
-
-                curNode = curNode.next;
-            }
-            curNode.next = new Node<T>(val, null);
         }
+
+        Node<T> curNode = firstNode;
+        while (curNode.getNext() != null) {
+            curNode = curNode.getNext();
+        }
+        Node<T> newNode = new Node<>(val, null);
+        curNode.setNext(newNode);
+        countElements++;
     }
 
     public T get(int index) {
@@ -46,23 +47,49 @@ public class OneLinkedList<T> implements Iterable<T> {
         return countElements;
     }
 
+    public void remove(int index) {
+        if (index > countElements - 1) {
+            throw new IndexOutOfBoundsException("No such index " + index);
+        }
+
+        if (index == 0) {
+            firstNode = firstNode.getNext();
+            return;
+        }
+
+        int k = 0;
+        Node<T> curNode = firstNode;
+        Node<T> prevNode = null;
+        while (curNode.getNext() != null) {
+            if (k == index) {
+                break;
+            }
+            prevNode = curNode;
+            curNode = curNode.getNext();
+            k++;
+        }
+        prevNode.setNext(curNode.getNext());
+        countElements--;
+    }
+
     /**
      * Список перестраивается в обратном порядке
      */
     public void reverse() {
 
         // в tmpNode собираем новый список с обратным порядком
-        Node tmpNode = null; 
-        Node curNode = firstNode;
+        Node<T> tmpNode = null; 
+        Node<T> curNode = firstNode;
         while (curNode.getNext() != null) {
             // добавление элемента в начало
-            tmpNode = new Node(curNode.getValue(), tmpNode);
+            tmpNode = new Node<T>(curNode.getValue(), tmpNode);
             // переход к следующему элементу
             curNode = curNode.getNext();
         }
         // добавление последнего элемента в начало
-        tmpNode = new Node(curNode.getValue(), tmpNode);
+        tmpNode = new Node<T>(curNode.getValue(), tmpNode);
 
+        // заменяем текущий новым списком
         firstNode = tmpNode;
     }
 
@@ -70,7 +97,7 @@ public class OneLinkedList<T> implements Iterable<T> {
     public String toString() {
         StringBuilder str = new StringBuilder();
 
-        Node curNode = firstNode;
+        Node<T> curNode = firstNode;
         while (curNode.getNext() != null) {
             str.append(curNode.getValue()).append(", ");
             curNode = curNode.getNext();
