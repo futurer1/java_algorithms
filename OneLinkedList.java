@@ -1,17 +1,49 @@
-public class OneLinkedList implements Iterable<T> {
-    private Node container;
+// Односвязный список, который может работать с различной типизации
 
-    public void add(Integer val) {
-        if (container == null) {
-            container = new Node(val, null);
+package java_algorithms;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class OneLinkedList<T> implements Iterable<T> {
+    // первый узел, в него вставляются все другие
+    private Node<T> firstNode;
+
+    // текущее кол-во элементов в списке
+    private int countElements;
+
+    public void add(T val) {
+        if (firstNode == null) {
+            firstNode = new Node<T>(val, null);
         } else {
-            Node curNode = container;
+            Node<T> curNode = firstNode;
             while (curNode.next != null) {
 
                 curNode = curNode.next;
             }
-            curNode.next = new Node(val, null);
+            curNode.next = new Node<T>(val, null);
         }
+    }
+
+    public T get(int index) {
+        if (index > countElements - 1) {
+            throw new IndexOutOfBoundsException("No such index " + index);
+        }
+
+        int k = 0;
+        Node<T> curNode = firstNode;
+        while (curNode.getNext() != null) {
+            if (k == index) {
+                break;
+            }
+            curNode = curNode.getNext();
+            k++;
+        }
+        return curNode.getValue();
+    }
+
+    public int getCount() {
+        return countElements;
     }
 
     /**
@@ -19,104 +51,33 @@ public class OneLinkedList implements Iterable<T> {
      */
     public void reverse() {
 
-        MyList reverseList = new MyList();
-        int count = getLastIndex();
-        // идём от последнего элемента к первому и сохраняем в новый список
-        for (int i = count; i >= 0; i--) {
-            Integer last = getValueByIndex(i);
-            reverseList.add(last);
+        // в tmpNode собираем новый список с обратным порядком
+        Node tmpNode = null; 
+        Node curNode = firstNode;
+        while (curNode.getNext() != null) {
+            // добавление элемента в начало
+            tmpNode = new Node(curNode.getValue(), tmpNode);
+            // переход к следующему элементу
+            curNode = curNode.getNext();
         }
+        // добавление последнего элемента в начало
+        tmpNode = new Node(curNode.getValue(), tmpNode);
 
-        Node curNode = container;
-
-        int k = 0;
-        // новый список копируется взамен старого
-        while (curNode.next != null) {
-            curNode.setValue(reverseList.getValueByIndex(k));
-            curNode = curNode.next;
-            k++;
-        }
-    }
-
-    /**
-     * второй способ перестроения списка в обратном порядке
-     */
-    public void reverse1() {
-        Node curNode = container;
-        int k = 0;
-        while (curNode.next != null) {
-            insertFirst(curNode.value);
-            curNode = curNode.next;
-            k++;
-        }
-        insertFirst(curNode.value);
-
-        curNode = container;
-        int l = 0;
-        while (curNode.next != null) {
-            if (l + 1 == k) {
-                curNode.next = null;
-                break;
-            }
-
-            curNode = curNode.next;
-            l++;
-        }
-    }
-
-    /**
-     * Вставка элемента в начало списка 
-     */
-    public void insertFirst(int val){
-        Node newnode = new Node(val, null);
-
-        if (container.getNext() != null) {
-            newnode.setNext(container.getNext());
-        }
-        container.setNext(newnode);
-
-        Integer tmp = container.getValue();
-        container.setValue(
-            container.getNext().getValue()
-        );
-        container.getNext().setValue(tmp);
-    }
-
-    public int getLastIndex() {
-        Node curNode = container;
-        int k = 0;
-        while (curNode.next != null) {
-            curNode = curNode.next;
-            k++;
-        }
-
-        return k;
-    }
-
-    public Integer getValueByIndex(int index) {
-        Node curNode = container;
-        int k = 0;
-        while (curNode.next != null && k < index) {
-            curNode = curNode.next;
-            k++;
-        }
-        return curNode.getValue();
+        firstNode = tmpNode;
     }
 
     @Override
     public String toString() {
-        StringBuilder resStr = new StringBuilder();
+        StringBuilder str = new StringBuilder();
 
-        Node curNode = container;
-        while (curNode.next != null) {
-
-            resStr.append(curNode.getValue());
-            resStr.append(", ");
-            curNode = curNode.next;
+        Node curNode = firstNode;
+        while (curNode.getNext() != null) {
+            str.append(curNode.getValue()).append(", ");
+            curNode = curNode.getNext();
         }
-        resStr.append(curNode.getValue());
+        str.append(curNode.getValue());
 
-        return resStr.toString();
+        return "[" + str.toString() + "]";
     }
 
     @Override
