@@ -23,5 +23,6 @@ public class BubbleSimple {
         }
 
         System.out.println(Arrays.toString(arr));
+        // [11, 12, 16, 34, 40, 64, 70, 72, 87, 88]
     }
 }
