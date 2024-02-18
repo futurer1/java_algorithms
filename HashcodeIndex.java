@@ -11,7 +11,7 @@ public class Hashcode {
         String s3 = "zxc";
         System.out.println(getBucketIndex(s1)); // 15
         System.out.println(getBucketIndex(s2)); // 2
-        System.out.println(getBucketIndex(s3));
+        System.out.println(getBucketIndex(s3)); // 5
     }
 
     /**
