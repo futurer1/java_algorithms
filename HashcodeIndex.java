@@ -10,7 +10,7 @@ public class Hashcode {
         String s2 = "asd";
         String s3 = "zxc";
         System.out.println(getBucketIndex(s1)); // 15
-        System.out.println(getBucketIndex(s2));
+        System.out.println(getBucketIndex(s2)); // 2
         System.out.println(getBucketIndex(s3));
     }
 
