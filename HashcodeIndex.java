@@ -1,3 +1,5 @@
+package java_algorithms;
+
 public class Hashcode {
 
     // количество корзин, в которое должны укладываться все элементы HashMap
