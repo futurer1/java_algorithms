@@ -9,7 +9,7 @@ public class Hashcode {
         String s1 = "qwe";
         String s2 = "asd";
         String s3 = "zxc";
-        System.out.println(getBucketIndex(s1));
+        System.out.println(getBucketIndex(s1)); // 15
         System.out.println(getBucketIndex(s2));
         System.out.println(getBucketIndex(s3));
     }
