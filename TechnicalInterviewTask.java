@@ -54,6 +54,10 @@ public class TechnicalInterviewTask {
         // оптимизированное решение через Stream API
         var result2 = getResultStreamApiOptimized(rList, documentsIds);
         System.out.println(result2);
+
+        // Ещё более короткий вариант на стримах
+        var result3 = getResultStreamApiOptimized(rList, documentsIds);
+        System.out.println(result3);
     }
 
     public static List<RegistrationAction> getResult(ArrayList<RegistrationAction> list, Long[] documentId) {
@@ -190,6 +194,31 @@ public class TechnicalInterviewTask {
                                 }),
                                 Optional::get
                         )
+                ))
+                .values()
+                .stream()
+                .filter(entry -> entry.getResult() > 0)
+                .collect(Collectors.toList());
+    }
+
+    public static List<RegistrationAction> getResultStreamApiOptimized1(ArrayList<RegistrationAction> list, Long[] documentId) {
+        Set<Long> findedDocs = new HashSet<>(Arrays.asList(documentId));
+
+        return list.stream()
+                .filter(entry -> findedDocs.contains(entry.getDocumentId()))
+                .collect(Collectors.toMap(
+                        entry -> "p" + entry.getPersonId() + "a" + entry.getAddressId(),
+                        Function.identity(),
+                        (obj1, obj2) -> {
+                            var result = obj1.getResult();
+                            if (IN.equals(obj2.getType())) {
+                                result++;
+                            } else if (OUT.equals(obj2.getType())) {
+                                result--;
+                            }
+                            obj1.setResult(result);
+                            return obj1;
+                        }
                 ))
                 .values()
                 .stream()
