@@ -27,7 +27,7 @@ public class TechnicalInterviewTask {
     private final static Long OUT = 11L;
     public static void main(String[] args) {
 
-        // условия задачи (список справок)
+        // условия задачи
         ArrayList<RegistrationAction> rList = new ArrayList<>(Arrays.asList(
                 new RegistrationAction(1L, 1L, 1L, 3L, 0),
                 new RegistrationAction(2L, 1L, 1L, 11L, 0),
@@ -36,7 +36,7 @@ public class TechnicalInterviewTask {
                 new RegistrationAction(5L, 3L, 1L, 3L, 0)
         ));
 
-        // передаваемые данные по условию (список documentId)
+        // передаваемые данные по условию
         Long[] documentsIds = new Long[4];
         documentsIds[0] = 1L;
         documentsIds[1] = 2L;
@@ -44,12 +44,16 @@ public class TechnicalInterviewTask {
         documentsIds[3] = 5L;
 
         // решение с циклами
-        var result1 = getResult(rList, documentsIds);
-        System.out.println(result1);
-        
-        // решение через Stream API
-        var result = getResultStreamApi(rList, documentsIds);
+        var result = getResult(rList, documentsIds);
         System.out.println(result);
+
+        // решение через Stream API
+        var result1 = getResultStreamApi(rList, documentsIds);
+        System.out.println(result1);
+
+        // оптимизированное решение через Stream API
+        var result2 = getResultStreamApiOptimized(rList, documentsIds);
+        System.out.println(result2);
     }
 
     public static List<RegistrationAction> getResult(ArrayList<RegistrationAction> list, Long[] documentId) {
@@ -163,6 +167,33 @@ public class TechnicalInterviewTask {
                 .entrySet()
                 .stream()
                 .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+    }
+
+    public static List<RegistrationAction> getResultStreamApiOptimized(ArrayList<RegistrationAction> list, Long[] documentId) {
+        Set<Long> findedDocs = new HashSet<>(Arrays.asList(documentId));
+
+        return list.stream()
+                .filter(entry -> findedDocs.contains(entry.getDocumentId()))
+                .collect(Collectors.groupingBy(
+                        entry -> "p" + entry.getPersonId() + "a" + entry.getAddressId(),
+                        Collectors.collectingAndThen(
+                                Collectors.reducing((obj1, obj2) -> {
+                                    var result = obj1.getResult();
+                                    if (IN.equals(obj2.getType())) {
+                                        result++;
+                                    } else if (OUT.equals(obj2.getType())) {
+                                        result--;
+                                    }
+                                    obj1.setResult(result);
+                                    return obj1;
+                                }),
+                                Optional::get
+                        )
+                ))
+                .values()
+                .stream()
+                .filter(entry -> entry.getResult() > 0)
                 .collect(Collectors.toList());
     }
 
