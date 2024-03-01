@@ -4,15 +4,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Существует справки прописки и выбытия по месту жительства.
- * Справка состоит из полей (documentId, personId, addressId, type).
- * Справка прописки по месту жительства имеет тип 3.
- * Справка выбытия с места жительства имеет тип 11.
+ * Существует документ прописки и выписки по месту пребывания.
+ * Документ состоит из полей (documentId, personId, addressId, type).
+ * Документ прописки по месту пребывания имеет тип 6.
+ * Документ выписки с места жительства имеет тип 13.
  *
- * Справка выбытия отменяет справку прибытия, если у них personId и addressId совпадают друг с другом.
- * На вход метода передается список справок и список documentId для фильтрации выходных данных.
+ * Документ выписки отменяет документ прописки, если у них personId и addressId совпадают друг с другом.
+ * На вход метода передается список документов и список documentId для фильтрации выходных данных.
  *
- * Метод должен выдавать только активные места регистрации для переданных documentId.
+ * Метод должен выдавать только тех, кто остался зарегистрирован для переданных documentId.
  *
  * Пример передаваемых данных
  * Список справок:
@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
  */
 public class TechnicalInterviewTask {
 
-    private final static Long IN = 3L;
-    private final static Long OUT = 11L;
+    private final static Long IN = 6L;
+    private final static Long OUT = 13L;
     public static void main(String[] args) {
 
         // условия задачи
@@ -82,10 +82,10 @@ public class TechnicalInterviewTask {
 
                     var resT = tmp.getResult();
                     if (curType.equals(IN)) {
-                        // справка прибытия увеличивает на 1 общий рейтинг
+                        // документ прописки увеличивает на 1 общий рейтинг
                         resT++;
                     } else if (curType.equals(OUT)) {
-                        // справка выбытия уменьшает на 1 общий рейтинг действия
+                        // документ выписки уменьшает на 1 общий рейтинг действия
                         resT--;
                     }
 
@@ -207,14 +207,14 @@ public class TechnicalInterviewTask {
         return list.stream()
                 .filter(entry -> findedDocs.contains(entry.getDocumentId())) // фильтруем только те документы, которые нужны
                 .collect(Collectors.toMap( // Создаем мапу, ключи которой строка с уникальным набором данных.
-                        // ключ - признак отмены справки прибытия справкой выбытия
+                        // ключ - признак отмены документа прописки документом выписки
                         entry -> "p" + entry.getPersonId() + "a" + entry.getAddressId(),
                         Function.identity(), // возвращает входные аргументы самой себя (маппер значений)
                         (obj1, obj2) -> { // функция, которая используется при мерже значений, если сопрадает ключ
                             var result = obj1.getResult();
-                            if (IN.equals(obj2.getType())) { // прибытие
+                            if (IN.equals(obj2.getType())) { // прописка
                                 result++;
-                            } else if (OUT.equals(obj2.getType())) { // выбытие
+                            } else if (OUT.equals(obj2.getType())) { // выписка
                                 result--;
                             }
                             obj1.setResult(result);
@@ -228,7 +228,7 @@ public class TechnicalInterviewTask {
     }
 
     /**
-     * Объект действия "Регистрация"
+     * Объект "Регистрационное действие"
      */
     static class RegistrationAction {
         private final Long documentId;
@@ -239,9 +239,9 @@ public class TechnicalInterviewTask {
         /**
          * Результирующий рейтинг действия
          */
-        private long result;
+        private Long result;
 
-        public RegistrationAction(long documentId, long personId, long addressId, long type, long result) {
+        public RegistrationAction(Long documentId, Long personId, Long addressId, Long type, Long result) {
             this.documentId = documentId;
             this.personId = personId;
             this.addressId = addressId;
@@ -269,7 +269,7 @@ public class TechnicalInterviewTask {
             return result;
         }
 
-        public void setResult(long result) {
+        public void setResult(Long result) {
             this.result = result;
         }
 
