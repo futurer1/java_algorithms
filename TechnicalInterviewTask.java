@@ -116,8 +116,8 @@ public class TechnicalInterviewTask {
     }
 
     public static List<RegistrationAction> getResultStreamApi(ArrayList<RegistrationAction> list, Long[] documentId) {
+        // множество id документов, которое нас интересует
         Set<Long> findedDocs = new HashSet<>(Arrays.asList(documentId));
-
 
         return list.stream()
                 .filter( o -> findedDocs.contains(o.getDocumentId()))
