@@ -205,24 +205,25 @@ public class TechnicalInterviewTask {
         Set<Long> findedDocs = new HashSet<>(Arrays.asList(documentId));
 
         return list.stream()
-                .filter(entry -> findedDocs.contains(entry.getDocumentId()))
-                .collect(Collectors.toMap(
+                .filter(entry -> findedDocs.contains(entry.getDocumentId())) // фильтруем только те документы, которые нужны
+                .collect(Collectors.toMap( // Создаем мапу, ключи которой строка с уникальным набором данных.
+                        // ключ - признак отмены справки прибытия справкой выбытия
                         entry -> "p" + entry.getPersonId() + "a" + entry.getAddressId(),
-                        Function.identity(),
-                        (obj1, obj2) -> {
+                        Function.identity(), // возвращает входные аргументы самой себя (маппер значений)
+                        (obj1, obj2) -> { // функция, которая используется при мерже значений, если сопрадает ключ
                             var result = obj1.getResult();
-                            if (IN.equals(obj2.getType())) {
+                            if (IN.equals(obj2.getType())) { // прибытие
                                 result++;
-                            } else if (OUT.equals(obj2.getType())) {
+                            } else if (OUT.equals(obj2.getType())) { // выбытие
                                 result--;
                             }
                             obj1.setResult(result);
                             return obj1;
                         }
-                ))
-                .values()
-                .stream()
-                .filter(entry -> entry.getResult() > 0)
+                )) // Map<String, RegistrationAction>
+                .values() // Collection<RegistrationAction> (уменьшили размерность с мапы до коллекции)
+                .stream() // Stream<RegistrationAction>
+                .filter(entry -> entry.getResult() > 0) // фильтруем только тех, кто остался прописан
                 .collect(Collectors.toList());
     }
 
