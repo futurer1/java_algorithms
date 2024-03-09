@@ -14,6 +14,7 @@ public class MyHashMap1 {
         myMap.put("Test2", 5);
 
         System.out.println(myMap);
+        
     }
 
     public static class Node<K,V> implements Iterator {
